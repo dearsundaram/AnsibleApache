@@ -1,2 +1,21 @@
----
-# tasks file for mariadb
+- hosts: all
+  gather_facts: true
+  become_method: sudo
+  become_user: root
+  tasks:
+
+    - name: Install Maria DB from OS repo
+      yum:
+        name: mariadb-server
+        state: latest
+
+    - name: Enable Maria DB service
+      service:
+        name: mariadb
+        status: enabled
+
+    - name: Start Maria DB service
+      service:
+        name: mariadb
+        status: started 
+    

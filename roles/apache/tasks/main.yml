@@ -24,4 +24,4 @@
     - name: Restart httpd service
       service:
         name: httpd
-        state: reloaded
+        state: started
