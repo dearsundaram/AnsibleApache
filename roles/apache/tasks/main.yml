@@ -1,2 +1,32 @@
----
-# tasks file for apache
+- hosts: all
+  gather_facts: true
+  become_method: sudo
+  become_user: root
+  tasks:
+
+    - name: Install Apache from OS repo
+      yum:
+        name: httpd
+        state: latest
+    
+    - name: Configure Apache to use the php files instead of html files from its doc root
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: index.html
+        replace: index.php
+        backup: yes
+ 
+    - name: Enable httpd service
+      service:
+        name: httpd
+        enabled: yes
+    
+    - name: Restart httpd service
+      service:
+        name: httpd
+        state: reloaded
+    
+    - name: Restart httpd service
+      service:
+        name: firewalld
+        state: reloaded
