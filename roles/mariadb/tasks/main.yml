@@ -17,5 +17,5 @@
     - name: Start Maria DB service
       service:
         name: mariadb
-        status: started 
+        status: restarted 
     

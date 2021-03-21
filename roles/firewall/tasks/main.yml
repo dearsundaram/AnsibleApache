@@ -1,2 +1,32 @@
----
-# tasks file for firewall
+- hosts: all
+  gather_facts: true
+  become_method: sudo
+  become_user: root
+  tasks:
+
+    - name: Install Firewalld module from OS repo
+      yum:
+        name: firewalld
+        state: latest
+
+    - name: Enable Friewalld service
+      service:
+        name: firewalld
+        status: enabled
+
+    - name: Remove firewall for HTTPD port 80
+      firewalld:
+          port: 80/tcp
+          permanent: yes
+          state: enabled
+    
+    - name: Remove firewall for Maria DB port 3306
+      firewalld:
+          port: 3306/tcp
+          permanent: yes
+          state: enabled
+
+    - name: Start Maria DB service
+      service:
+        name: mariadb
+        status: restarted 
