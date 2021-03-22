@@ -1,2 +1,32 @@
----
-# tasks file for php_git
+########## PHP and GIT DOWNLOAD PLAYBOOK ##########
+- hosts: all
+  gather_facts: true
+  become_method: sudo
+  become_user: root
+  tasks:
+    ####### Install prerequisistes ######
+    - name: Install php package
+      yum:
+        name: php
+        state: installed
+    
+    - name: Install git package
+      yum:
+        name: git
+        state: installed
+
+    ########## Clone the GIT repository which has php code #######
+    - name: Clone a repo with separate git directory
+      ansible.builtin.git:
+         repo: https://github.com/kodekloudhub/learning-app-ecommerce.git
+         dest: /var/www/html
+         clone: yes
+
+    - name: Configure Apache to use the php files instead of html files from its doc root
+      replace:
+        path: /var/www/html/index.php
+        regexp: 172.20.1.101
+        replace: localhost
+        backup: yes
+
+
