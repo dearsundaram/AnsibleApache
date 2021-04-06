@@ -1,0 +1,9 @@
+---
+
+- hosts: webservers
+  roles:
+    - apache
+    - mariadb
+    - firewall
+    - php_git
+    - sqlinit
