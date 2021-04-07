@@ -4,14 +4,17 @@
       yum:
         name: mariadb-server
         state: latest
+      become: true
 
     - name: Enable Maria DB service
       service:
         name: mariadb
         status: enabled
+      become: true
 
     - name: Start Maria DB service
       service:
         name: mariadb
-        status: restarted 
+        status: restarted
+      become: true
     

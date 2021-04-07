@@ -4,25 +4,30 @@
       yum:
         name: firewalld
         state: latest
+      become: true
 
     - name: Enable Friewalld service
       service:
         name: firewalld
         status: enabled
+      become: true
 
     - name: Remove firewall for HTTPD port 80
       firewalld:
           port: 80/tcp
           permanent: yes
-          state: enabled
+          state: 
+      become: true
     
     - name: Remove firewall for Maria DB port 3306
       firewalld:
           port: 3306/tcp
           permanent: yes
           state: enabled
+      become: true
 
     - name: Start Maria DB service
       service:
         name: mariadb
-        status: restarted 
+        status: restarted
+      become: true

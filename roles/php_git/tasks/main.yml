@@ -4,11 +4,13 @@
       yum:
         name: php
         state: installed
+      become: true
     
     - name: Install git package
       yum:
         name: git
         state: installed
+      become: true
 
     ########## Clone the GIT repository which has php code #######
     - name: Clone a repo with separate git directory
@@ -16,6 +18,7 @@
          repo: https://github.com/kodekloudhub/learning-app-ecommerce.git
          dest: /var/www/html
          clone: yes
+      become: true
 
     - name: Configure Apache to use the php files instead of html files from its doc root
       replace:
@@ -23,5 +26,6 @@
         regexp: 172.20.1.101
         replace: localhost
         backup: yes
+      become: true
 
 
