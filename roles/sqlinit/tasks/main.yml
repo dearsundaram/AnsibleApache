@@ -21,7 +21,7 @@
       become: true
     
     - name: Flush Privileges
-      shell: MySQL -e "FLUSH PRIVILEGES;"
+      shell: mysql -e "FLUSH PRIVILEGES;"
       become: true
 
     - name: Creating db-load-script.sql file
