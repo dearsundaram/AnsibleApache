@@ -34,5 +34,5 @@
       become: true
 
     - name: Run the db-load-script.sql file
-      shell: mysql < db-load-script.sql
+      shell: mysql < /home/root/db-load-script.sql
       become: true
