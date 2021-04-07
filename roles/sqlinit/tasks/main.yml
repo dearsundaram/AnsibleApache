@@ -4,7 +4,8 @@
       pip:
         name: PyMySQL
         state: latest
-        
+      become: true
+
     - name: Create a new database with name 'ecomdb'
       mysql_db:
         name: ecomdb
