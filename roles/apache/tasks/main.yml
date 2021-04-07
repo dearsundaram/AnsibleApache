@@ -7,6 +7,7 @@
       yum:
         name: httpd
         state: latest
+      become: true
     
     - name: Configure Apache to use the php files instead of html files from its doc root
       replace:
