@@ -9,7 +9,7 @@
     - name: Enable Maria DB service
       service:
         name: mariadb
-        status: enabled
+        enabled: yes
       become: true
 
     - name: Start Maria DB service
