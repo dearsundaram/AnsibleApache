@@ -18,6 +18,7 @@
          repo: https://github.com/kodekloudhub/learning-app-ecommerce.git
          dest: /var/www/html
          clone: yes
+         force: no
       become: true
 
     - name: Configure Apache to use the php files instead of html files from its doc root
