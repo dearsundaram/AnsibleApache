@@ -16,7 +16,7 @@
       mysql_user:
        name: ecomuser
        password: ecompassword
-       priv: '*.*': 'ALL,GRANT'
+       priv: '*.*:ALL,GRANT'
        state: present
       become: true
     
