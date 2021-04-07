@@ -26,9 +26,9 @@
         state: enabled
       become: true
 
-    - name: Start Maria DB service
+    - name: Start firewalld service
       service:
-        name: mariadb
+        name: firewalld
         state: restarted
       become: true
       
