@@ -1,21 +1,15 @@
 ########## SQL PLAYBOOK ###############
-- hosts: all
-  gather_facts: true
-  become_method: sudo
-  become_user: root
-  tasks:
-
     - name: Create a new database with name 'ecomdb'
       mysql_db:
         name: ecomdb
         state: present
     
-   - name: Create database user with name 'bob' and password '12345' with all database privileges
-    mysql_user:
-      name: ecomuser
-      password: ecompassword
-      priv: '*.*:'ecomuser'@'localhost''
-      state: present
+    - name: Create database user with name 'bob' and password '12345' with all database privileges
+      mysql_user:
+       name: ecomuser
+       password: ecompassword
+       priv: "*.*:ecomuser@localhost"
+       state: present
     
     - name: Flush Privileges
       shell: MySQL -e "FLUSH PRIVILEGES;"

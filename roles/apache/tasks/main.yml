@@ -1,10 +1,8 @@
 ############ APACHE PLAYBOOK ###########
-- hosts: all
-  gather_facts: true
-  become_method: sudo
-  become_user: root
-  tasks:
-
+#- hosts: webservers
+#  gather_facts: true
+#  become_method: sudo
+#  become_user: root
     - name: Install Apache from OS repo
       yum:
         name: httpd
