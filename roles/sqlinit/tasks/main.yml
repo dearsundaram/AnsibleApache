@@ -1,4 +1,10 @@
 ########## SQL PLAYBOOK ###############
+
+    - name: Install required MySQL modules using pip3
+      pip:
+        name: PyMySQL
+        state: latest
+        
     - name: Create a new database with name 'ecomdb'
       mysql_db:
         name: ecomdb
