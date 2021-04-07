@@ -26,7 +26,7 @@
 
     - name: Creating db-load-script.sql file
       copy:
-        dest: "/home/root"
+        dest: "/root"
         content: |
           USE ecomdb;
           CREATE TABLE products (id mediumint(8) unsigned NOT NULL auto_increment,Name varchar(255) default NULL,Price varchar(255) default NULL, ImageUrl varchar(255) default NULL,PRIMARY KEY (id)) AUTO_INCREMENT=1;
@@ -34,5 +34,5 @@
       become: true
 
     - name: Run the db-load-script.sql file
-      shell: mysql < /home/root/db-load-script.sql
+      shell: mysql < /root/db-load-script.sql
       become: true
