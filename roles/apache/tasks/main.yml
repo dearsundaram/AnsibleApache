@@ -15,13 +15,16 @@
         regexp: index.html
         replace: index.php
         backup: yes
+      become: true
  
     - name: Enable httpd service
       service:
         name: httpd
         enabled: yes
+      become: true
     
     - name: Restart httpd service
       service:
         name: httpd
         state: restarted
+      become: true
