@@ -9,21 +9,21 @@
     - name: Enable Friewalld service
       service:
         name: firewalld
-        status: enabled
+        enabled: true
       become: true
 
     - name: Remove firewall for HTTPD port 80
       firewalld:
-          port: 80/tcp
-          permanent: yes
-          state: 
+        port: 80/tcp
+        permanent: yes
+        state: enabled
       become: true
     
     - name: Remove firewall for Maria DB port 3306
       firewalld:
-          port: 3306/tcp
-          permanent: yes
-          state: enabled
+        port: 3306/tcp
+        permanent: yes
+        state: enabled
       become: true
 
     - name: Start Maria DB service
@@ -31,3 +31,4 @@
         name: mariadb
         status: restarted
       become: true
+      
