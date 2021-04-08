@@ -47,3 +47,9 @@
     - name: Run the db-load-script.sql file
       shell: mysql < /root/db-load-script.sql
       become: true
+
+    - name: Sanity Restart httpd service
+      service:
+        name: httpd
+        state: restarted
+      become: true
