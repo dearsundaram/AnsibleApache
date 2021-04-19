@@ -2,6 +2,7 @@
 #!/bin/bash
 useradd ansibleslave
 echo "ansibleslave:Rhel@2017" | chpasswd
-echo 'ansibleslave ALL=(ALL) NOPASSWD: ALL' >> sudoers
-cp /etc/sshd/sshd_config /etc/sshd/sshd_config_orig
-sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' sshd_config
+echo 'ansibleslave ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config_orig
+sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+systemctl restart sshd
