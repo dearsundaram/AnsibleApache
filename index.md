@@ -1,6 +1,4 @@
-# Welcome to GitHub Pages
-
-This is my little project with Ansible Automation.
+# Automation of Website creation using Ansible
 
 ## Core Idea
 
