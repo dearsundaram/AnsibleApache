@@ -51,44 +51,200 @@ Once the roles are created, the next step is to write the required playbooks for
 
 ## Apache Playbook
 
-![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/Apache_playbook.png?raw=false)
+```markdown
+
+############ APACHE PLAYBOOK ###########
+#- hosts: webservers
+#  gather_facts: true
+#  become_method: sudo
+#  become_user: root
+    - name: Install Apache from OS repo
+      yum:
+        name: httpd
+        state: latest
+      become: true
+    
+    - name: Configure Apache to use the php files instead of html files from its doc root
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: index.html
+        replace: index.php
+        backup: yes
+      become: true
+ 
+    - name: Enable httpd service
+      service:
+        name: httpd
+        enabled: yes
+      become: true
+    
+    - name: Restart httpd service
+      service:
+        name: httpd
+        state: restarted
+      become: true
+```
 
 
 
 ## MariaDB Installation Playbook
 
-![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/Mariadb_playbook.png?raw=false)
+```markdown
 
+################### MARIADB PLAYBOOK ###############
 
+    - name: Install Maria DB from OS repo
+      yum:
+        name: mariadb-server
+        state: latest
+      become: true
+
+    - name: Enable Maria DB service
+      service:
+        name: mariadb
+        enabled: yes
+      become: true
+
+    - name: Start Maria DB service
+      service:
+        name: mariadb
+        state: restarted
+      become: true
+```
 
 ## Firewalld Installation Playbook
 
-![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/Firewall_playbook.png?raw=false)
 
 ```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+############## FIREWALLD PLAYBOOK ###########
 
-- Bulleted
-- List
+    - name: Install Firewalld module from OS repo
+      yum:
+        name: firewalld
+        state: latest
+      become: true
 
-1. Numbered
-2. List
+    - name: Enable Friewalld service
+      service:
+        name: firewalld
+        enabled: true
+      become: true
 
-**Bold** and _Italic_ and `Code` text
+    - name: Remove firewall for HTTPD port 80
+      firewalld:
+        port: 80/tcp
+        permanent: yes
+        state: enabled
+      become: true
+    
+    - name: Remove firewall for Maria DB port 3306
+      firewalld:
+        port: 3306/tcp
+        permanent: yes
+        state: enabled
+      become: true
 
-[Link](url) and ![Image](src)
+    - name: Start firewalld service
+      service:
+        name: firewalld
+        state: restarted
+      become: true
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## PHP Installation Playbook
 
-### Jekyll Themes
+```markdown
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/dearsundaram/AnsibleApache/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+########## PHP and GIT DOWNLOAD PLAYBOOK ##########
+    ####### Install prerequisistes ######
+    - name: Install php package
+      yum:
+        name: php
+        state: installed
+      become: true
+    
+    - name: Install git package
+      yum:
+        name: git
+        state: installed
+      become: true
 
-### Support or Contact
+    ########## Clone the GIT repository which has php code #######
+    - name: Clone a repo with separate git directory
+      ansible.builtin.git:
+         repo: https://github.com/kodekloudhub/learning-app-ecommerce.git
+         dest: /var/www/html
+         clone: yes
+         force: yes
+      become: true
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+    - name: Configure Apache to use the php files instead of html files from its doc root
+      replace:
+        path: /var/www/html/index.php
+        regexp: 172.20.1.101
+        replace: localhost
+        backup: yes
+      become: true
+```
+
+## Database and Table configuration Playbook
+
+```markdown
+
+########## SQL PLAYBOOK ###############
+    - name: Install  pip3
+      yum:
+        name: python3-pip
+        state: latest
+      become: true
+
+    - name: Install required MySQL modules using pip3
+      pip:
+        name: PyMySQL
+        state: latest
+      become: true
+
+    - name: Install mysqli for connecting to DB through php
+      yum:
+        name: php-mysqli
+        state: latest
+      become: true
+
+    - name: Create a new database with name 'ecomdb'
+      mysql_db:
+        name: ecomdb
+        state: present
+      become: true
+    
+    - name: Create database user with name 'bob' and password '12345' with all database privileges
+      mysql_user:
+       name: ecomuser
+       password: ecompassword
+       priv: '*.*:ALL,GRANT'
+       state: present
+      become: true
+    
+    - name: Flush Privileges
+      shell: mysql -e "FLUSH PRIVILEGES;"
+      become: true
+
+    - name: Creating db-load-script.sql file
+      copy:
+        dest: "/root/db-load-script.sql"
+        content: |
+          USE ecomdb;
+          CREATE TABLE products (id mediumint(8) unsigned NOT NULL auto_increment,Name varchar(255) default NULL,Price varchar(255) default NULL, ImageUrl varchar(255) default NULL,PRIMARY KEY (id)) AUTO_INCREMENT=1;
+          INSERT INTO products (Name,Price,ImageUrl) VALUES ("Laptop","100","c-1.png"),("Drone","200","c-2.png"),("VR","300","c-3.png"),("Tablet","50","c-5.png"),("Watch","90","c-6.png"),("Phone Covers","20","c-7.png"),("Phone","80","c-8.png"),("Laptop","150","c-4.png");
+      become: true
+
+    - name: Run the db-load-script.sql file
+      shell: mysql < /root/db-load-script.sql
+      become: true
+
+    - name: Sanity Restart httpd service
+      service:
+        name: httpd
+        state: restarted
+      become: true
+```
