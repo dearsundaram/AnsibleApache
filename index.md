@@ -38,13 +38,32 @@ The entire process mentioned above can be automated in Ansible.
 
 All we need is an EC2 instance running RHEL OS.
 
-In order to keep the code simple and reusable, **Ansible Roles** methodology is implemented
+In order to keep the code simple and reusable, **Ansible Roles** methodology is implemented. I have used _ansible galaxy_ to create and define the roles
 
 The list of roles implemented for this project is given below :
 
 
+![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/RolesFolder.png?raw=false)
 
-![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/RolesFolder.png?raw=true)
+
+
+Once the roles are created, the next step is to write the required playbooks for each and every role.
+
+## Apache Playbook
+
+![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/Apache_playbook.png?raw=false)
+
+
+
+## MariaDB Installation Playbook
+
+![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/Mariadb_playbook.png?raw=false)
+
+
+
+## Firewalld Installation Playbook
+
+![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/Firewall_playbook.png?raw=false)
 
 ```markdown
 Syntax highlighted code block
