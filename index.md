@@ -51,6 +51,8 @@ Once the roles are created, the next step is to write the required playbooks for
 
 ## Apache Playbook
 
+This playbook will install the Apache web server from OS repo and will instruct mighty Apache to look for a php file to load its web page
+
 ```markdown
 
 ############ APACHE PLAYBOOK ###########
@@ -89,6 +91,8 @@ Once the roles are created, the next step is to write the required playbooks for
 
 ## MariaDB Installation Playbook
 
+Maria DB is also installed from OS repository and it service is enabled
+
 ```markdown
 
 ################### MARIADB PLAYBOOK ###############
@@ -114,6 +118,10 @@ Once the roles are created, the next step is to write the required playbooks for
 
 ## Firewalld Installation Playbook
 
+
+Firewalld is an important module which will help in removing the firewall between Apache and MariaDB. 
+
+As you can see below, after installing firewalld from repo, we have removed the firewall for port 80 (httpd) and port 3306 (MariaDB)
 
 ```markdown
 
@@ -152,43 +160,13 @@ Once the roles are created, the next step is to write the required playbooks for
       become: true
 ```
 
-## PHP Installation Playbook
-
-```markdown
-
-########## PHP and GIT DOWNLOAD PLAYBOOK ##########
-    ####### Install prerequisistes ######
-    - name: Install php package
-      yum:
-        name: php
-        state: installed
-      become: true
-    
-    - name: Install git package
-      yum:
-        name: git
-        state: installed
-      become: true
-
-    ########## Clone the GIT repository which has php code #######
-    - name: Clone a repo with separate git directory
-      ansible.builtin.git:
-         repo: https://github.com/kodekloudhub/learning-app-ecommerce.git
-         dest: /var/www/html
-         clone: yes
-         force: yes
-      become: true
-
-    - name: Configure Apache to use the php files instead of html files from its doc root
-      replace:
-        path: /var/www/html/index.php
-        regexp: 172.20.1.101
-        replace: localhost
-        backup: yes
-      become: true
-```
-
 ## Database and Table configuration Playbook
+
+After configuring the firewall, the next step is to configure the database to load the cart information
+
+To achieve this, we are installing multiple modules
+1. Install mysql module using pip3 
+2. Install php-mysqli module so that the SQL queries gets executed under the php tag
 
 ```markdown
 
@@ -248,3 +226,47 @@ Once the roles are created, the next step is to write the required playbooks for
         state: restarted
       become: true
 ```
+
+## PHP Installation Playbook
+
+PHP code is taken from https://github.com/kodekloudhub/learning-app-ecommerce.git repo. This is the code which is going to design our shopping cart website.
+
+Courtesy : Mumshad Mannambeth
+
+The entire PHP code is copied under /var/www/html folder which is the default web page path for Apache. Also. we are also adding the database server's IP and port number in the index.php file
+
+
+```markdown
+
+########## PHP and GIT DOWNLOAD PLAYBOOK ##########
+    ####### Install prerequisistes ######
+    - name: Install php package
+      yum:
+        name: php
+        state: installed
+      become: true
+    
+    - name: Install git package
+      yum:
+        name: git
+        state: installed
+      become: true
+
+    ########## Clone the GIT repository which has php code #######
+    - name: Clone a repo with separate git directory
+      ansible.builtin.git:
+         repo: https://github.com/kodekloudhub/learning-app-ecommerce.git
+         dest: /var/www/html
+         clone: yes
+         force: yes
+      become: true
+
+    - name: Configure Apache to use the php files instead of html files from its doc root
+      replace:
+        path: /var/www/html/index.php
+        regexp: 172.20.1.101
+        replace: localhost
+        backup: yes
+      become: true
+```
+
