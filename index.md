@@ -4,7 +4,16 @@ This is my little project with Ansible Automation.
 
 ## Core Idea
 
-The core idea is to automate the creation of a shopping cart website using Ansible
+The idea is to automate the creation of a shopping cart website using Ansible
+
+
+## Architecture Diagram
+
+The below architecture diagram is the layout for the website. It has 3 major entities
+
+1. **Apache Web Server** (2.4.x) on top of RedHat Linux
+2. **PHP code** deployed on to Apache
+3. **Maria DB** which has the complete list of products
 
 ![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/Architecture.jpeg.png?raw=true)
 
