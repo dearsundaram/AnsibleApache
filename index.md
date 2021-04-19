@@ -1,8 +1,12 @@
-## Welcome to GitHub Pages
+# Welcome to GitHub Pages
 
-This is my little project with Ansible Automation
+This is my little project with Ansible Automation.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Core Idea
+
+The core idea is to automate the creation of a shopping cart website using Ansible
+
+![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/Architecture.jpeg.png?raw=true)
 
 ### Markdown
 
