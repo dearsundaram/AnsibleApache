@@ -17,7 +17,7 @@ The below architecture diagram is the layout for the website. It has 3 major ent
 
 ![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/Architecture.jpeg.png?raw=true)
 
-## Implementation Plan
+## Implementation Plan (Manual)
 
 Below are the steps which needs to be performed manually for achieving the above model website
 
@@ -32,6 +32,19 @@ Below are the steps which needs to be performed manually for achieving the above
 9. Remove the firewall between the DB and HTTPD ports
 10. Restart Database and Apache webserver
 
+
+## Implementation Plan (Automation)
+The entire process mentioned above can be automated in Ansible.
+
+All we need is an EC2 instance running RHEL OS.
+
+In order to keep the code simple and reusable, **Ansible Roles** methodology is implemented
+
+The list of roles implemented for this project is given below :
+
+
+
+![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/RolesFolder.png?raw=true)
 
 ```markdown
 Syntax highlighted code block
