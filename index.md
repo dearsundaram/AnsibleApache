@@ -32,6 +32,7 @@ Below are the steps which needs to be performed manually for achieving the above
 9. Remove the firewall between the DB and HTTPD ports
 10. Restart Database and Apache webserver
 
+
 ```markdown
 Syntax highlighted code block
 
