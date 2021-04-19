@@ -268,3 +268,145 @@ The entire PHP code is copied under /var/www/html folder which is the default we
       become: true
 ```
 
+## After creating all these role, they are invoked in the main ansible script as below 
+
+
+The main ansible playbook name is **AnsibleApache.yml**
+
+```markdown
+
+---
+- hosts: webservers
+  gather_facts: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - apache
+    - mariadb
+    - firewall
+    - php_git
+    - sqlinit
+```
+
+
+# SIMULATION 
+
+To simulate this, we need at least two servers. One server will act as an Ansible controller where this entire playbooks will be created
+
+The other server will act as Ansible Slave, in which the actual setup for the website is created.
+
+For simulation purpse, we have installed **Apache**, **PHP**, **MariaDB** on the same server.
+
+Both Ansible controller and Ansible slave is created as an EC2 instance (Thanks to AWS free tier !! )
+
+
+![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/AWS_Instances.png?raw=false)
+
+
+The entire playbook is pushed to **AnsibleApache** (Ansible Master) using git client
+
+Now the main playbook **AnsibleApache.yml** will be executed as below 
+
+
+```markdown
+
+[ansiblecontrol@ip-172-31-28-108 AnsibleApache]$ ansible-playbook AnsibleApache.yml 
+
+PLAY [webservers] *******************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************
+ok: [172.31.58.102]
+
+TASK [apache : Install Apache from OS repo] *****************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [apache : Configure Apache to use the php files instead of html files from its doc root] ***************************************************************
+changed: [172.31.58.102]
+
+TASK [apache : Enable httpd service] ************************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [apache : Restart httpd service] ***********************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [mariadb : Install Maria DB from OS repo] **************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [mariadb : Enable Maria DB service] ********************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [mariadb : Start Maria DB service] *********************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [firewall : Install Firewalld module from OS repo] *****************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [firewall : Enable Friewalld service] ******************************************************************************************************************
+ok: [172.31.58.102]
+
+TASK [firewall : Remove firewall for HTTPD port 80] *********************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [firewall : Remove firewall for Maria DB port 3306] ****************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [firewall : Start firewalld service] *******************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [php_git : Install php package] ************************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [php_git : Install git package] ************************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [php_git : Clone a repo with separate git directory] ***************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [php_git : Configure Apache to use the php files instead of html files from its doc root] **************************************************************
+changed: [172.31.58.102]
+
+TASK [sqlinit : Install  pip3] ******************************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [sqlinit : Install required MySQL modules using pip3] **************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [sqlinit : Install mysqli for connecting to DB through php] ********************************************************************************************
+changed: [172.31.58.102]
+
+TASK [sqlinit : Create a new database with name 'ecomdb'] ***************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [sqlinit : Create database user with name 'bob' and password '12345' with all database privileges] *****************************************************
+changed: [172.31.58.102]
+
+TASK [sqlinit : Flush Privileges] ***************************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [sqlinit : Creating db-load-script.sql file] ***********************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [sqlinit : Run the db-load-script.sql file] ************************************************************************************************************
+changed: [172.31.58.102]
+
+TASK [sqlinit : Sanity Restart httpd service] ***************************************************************************************************************
+changed: [172.31.58.102]
+
+PLAY RECAP **************************************************************************************************************************************************
+172.31.58.102              : ok=26   changed=24   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+```
+
+
+## Website hosted on new Ansible Slave server ##
+
+
+![image](https://github.com/dearsundaram/AnsibleApache/blob/gh-pages/FinalWebPage.png?raw=false)
+
+
+# BENEFITS OF ANSIBLE AUTOMATION
+
+This entire process on manual mode will take atleast 2 hours to complete for a single server and may extend if anything is missed in the process.
+
+However, after automating the same set of instructions using ansible, it only take 5-7 mins to setup the entire website per server without any manual errors..!!!
+
