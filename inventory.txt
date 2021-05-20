@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 [webservers]
 54.82.56.228 ansible_user=ansibleslave ansible_ssh_pass=Rhel@2017
+=======
+[webservers]
+54.82.56.228 ansible_user=ansibleslave ansible_ssh_pass=Rhel@2017
+>>>>>>> d467ad907399d3a2792bf833c633a84e257f7f7d
